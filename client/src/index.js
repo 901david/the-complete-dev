@@ -5,11 +5,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './ducks/store';
+import { Il8nProvider } from './components/Il8nProvider';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <Il8nProvider>
+        <App />
+      </Il8nProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

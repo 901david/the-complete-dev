@@ -1,4 +1,7 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { languages } from '../../shared/languages';
+
+const supportedLocales = new Set(Object.keys(languages));
 
 const {
   name: il8n_REDUCER_KEY,
@@ -8,24 +11,18 @@ const {
   name: 'il8n',
   initialState: {
     locale: 'en-US',
-    messages: {},
+    messages: languages['en-US'],
   },
   reducers: {
     setLocale(state, action) {
+      if (!supportedLocales.has(action.payload))
+        throw new Error('Unsupported Locale');
       state.locale = action.payload;
-    },
-    setMessages(state, action) {
-      state.messages = action.payload;
+      state.messages = languages[action.payload];
     },
   },
 });
+const state = state => state || {};
+const il8nSelector = createSelector(state, _state => _state[il8n_REDUCER_KEY]);
 
-const localeSelector = createSelector(state => state[il8n_REDUCER_KEY].locale);
-
-export {
-  setLocale,
-  setMessages,
-  il8nReducer,
-  il8n_REDUCER_KEY,
-  localeSelector,
-};
+export { setLocale, il8nReducer, il8n_REDUCER_KEY, il8nSelector };
